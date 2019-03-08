@@ -1,0 +1,31 @@
+0	1	mikroCFT90x.exe -MSF -DBG -p FT900 -BIN -DL -SSA -O11111114 -fo100 -N"C:\Users\aleksandar.paunovic\Desktop\FM Click\example\c\FT90x\Click_FM_FT90x.mcpf9" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for FT90x\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for FT90x\Uses\" -SP"C:\Users\aleksandar.paunovic\Desktop\FM Click\example\c\FT90x\" -SP"C:\Users\aleksandar.paunovic\Desktop\FM Click\library\HAL\" -SP"C:\Users\aleksandar.paunovic\Desktop\FM Click\library\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for FT90x\Packages\mikroBUS Board Definition API\Uses\" -IP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for FT90x\Uses\" -IP"C:\Users\aleksandar.paunovic\Desktop\FM Click\example\c\FT90x\" -IP"C:\Users\aleksandar.paunovic\Desktop\FM Click\library\" -IP"C:\Users\aleksandar.paunovic\Desktop\FM Click\library\HAL\" -IP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for FT90x\Packages\mikroBUS Board Definition API\Uses\" "Click_FM_FT90x.c" "__fm_Driver.c" "__Lib_Delays.emcl" "__Lib_System.emcl" "__Lib_Math.emcl" "__Lib_MathDouble.emcl" "__Lib_GPIO.emcl" "__Lib_CString.emcl" "__Lib_Conversions.emcl" "__Lib_I2C.emcl" "__Lib_UART.emcl" "easyft90x_v7_FT900.emcl" "Click_FM.pld"	 
+diagnostics: 0	122	Compilation Started	stdint.h
+diagnostics: 496	123	Compiled Successfully	Click_FM_FT90x.c
+diagnostics: 0	122	Compilation Started	stdint.h
+diagnostics: 948	123	Compiled Successfully	__fm_Driver.c
+hint: 323	1164	Variable 'tmp' has been eliminated by optimizer	__fm_Driver.c
+hint: 89	1164	Variable 'tmp' has been eliminated by optimizer	__fm_Driver.c
+hint: 382	1164	Variable 'auxVariable' has been eliminated by optimizer	__fm_Driver.c
+hint: 384	1164	Variable 'nErrors' has been eliminated by optimizer	__fm_Driver.c
+hint: 402	1164	Variable 'auxVariable' has been eliminated by optimizer	__fm_Driver.c
+hint: 404	1164	Variable 'rssiValue' has been eliminated by optimizer	__fm_Driver.c
+hint: 420	1164	Variable 'auxVariable' has been eliminated by optimizer	__fm_Driver.c
+hint: 422	1164	Variable 'nErrors' has been eliminated by optimizer	__fm_Driver.c
+hint: 440	1164	Variable 'auxVariable' has been eliminated by optimizer	__fm_Driver.c
+hint: 442	1164	Variable 'nErrors' has been eliminated by optimizer	__fm_Driver.c
+hint: 460	1164	Variable 'auxVariable' has been eliminated by optimizer	__fm_Driver.c
+hint: 462	1164	Variable 'nErrors' has been eliminated by optimizer	__fm_Driver.c
+hint: 480	1164	Variable 'channel_' has been eliminated by optimizer	__fm_Driver.c
+hint: 483	1164	Variable 'channelFrequency_' has been eliminated by optimizer	__fm_Driver.c
+hint: 626	1164	Variable 'channel_' has been eliminated by optimizer	__fm_Driver.c
+hint: 661	1164	Variable 'aux_' has been eliminated by optimizer	__fm_Driver.c
+hint: 934	1164	Variable 'status_' has been eliminated by optimizer	__fm_Driver.c
+hint: 943	1164	Variable 'status_' has been eliminated by optimizer	__fm_Driver.c
+diagnostics: 0	127	All files Compiled in 157 ms	 
+hint: 0	1144	Used RX: 20 (62%)   Free RX: 12 (38%)	Used RX: 20 (62%)   Free RX: 12 (38%)
+hint: 0	1144	Static RAM (bytes): 3617   Dynamic RAM (bytes): 61909	Static RAM (bytes): 3617   Dynamic RAM (bytes): 61909
+hint: 0	1144	Used ROM (bytes): 27129 (10%)  Free ROM (bytes): 235015 (90%)	Used ROM (bytes): 27129 (10%)  Free ROM (bytes): 235015 (90%)
+diagnostics: 0	125	Project Linked Successfully	Click_FM_FT90x.mcpf9
+diagnostics: 0	128	Linked in 125 ms	 
+diagnostics: 0	129	Project 'Click_FM_FT90x.mcpf9' completed: 344 ms	 
+diagnostics: 0	103	Finished successfully: 19 Nov 2018, 17:38:58	Click_FM_FT90x.mcpf9

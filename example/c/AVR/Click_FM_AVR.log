@@ -1,0 +1,38 @@
+0	1	mikrocAVR.exe -MSF -DBG -pATMEGA32 -DL -SSA -O11111114 -fo8 -BOOTSZ2048 -BOOTOP0 -N"C:\Users\aleksandar.paunovic\Desktop\FM Click\example\c\AVR\Click_FM_AVR.mcpav" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for AVR\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for AVR\Uses\lte64kw\" -SP"C:\Users\aleksandar.paunovic\Desktop\FM Click\example\c\AVR\" -SP"C:\Users\aleksandar.paunovic\Desktop\FM Click\library\HAL\" -SP"C:\Users\aleksandar.paunovic\Desktop\FM Click\library\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for AVR\Packages\mikroBUS Board Definition API\Uses\" -IP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for AVR\Uses\lte64kw\" -IP"C:\Users\aleksandar.paunovic\Desktop\FM Click\example\c\AVR\" -IP"C:\Users\aleksandar.paunovic\Desktop\FM Click\library\" -IP"C:\Users\aleksandar.paunovic\Desktop\FM Click\library\HAL\" -IP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for AVR\Packages\mikroBUS Board Definition API\Uses\" "Click_FM_AVR.c" "__fm_Driver.c" "__Lib_Math.mcl" "__Lib_MathDouble.mcl" "__Lib_System.mcl" "__Lib_Delays.mcl" "__Lib_CString.mcl" "__Lib_Conversions.mcl" "__Lib_TWI.mcl" "__Lib_UART_d01_ursel.mcl" "easyavr_v7_ATMEGA32.mcl" "Click_FM.pld"	 
+diagnostics: 0	122	Compilation Started	stdint.h
+diagnostics: 501	123	Compiled Successfully	Click_FM_AVR.c
+diagnostics: 0	122	Compilation Started	stdint.h
+hint: 663	1163	Variable 'band_' has been declared, but not used	__fm_Driver.c
+diagnostics: 1029	123	Compiled Successfully	__fm_Driver.c
+hint: 323	1164	Variable 'tmp' has been eliminated by optimizer	__fm_Driver.c
+hint: 94	1164	Variable 'tmp' has been eliminated by optimizer	__fm_Driver.c
+hint: 382	1164	Variable 'auxVariable' has been eliminated by optimizer	__fm_Driver.c
+hint: 384	1164	Variable 'nErrors' has been eliminated by optimizer	__fm_Driver.c
+hint: 402	1164	Variable 'auxVariable' has been eliminated by optimizer	__fm_Driver.c
+hint: 404	1164	Variable 'rssiValue' has been eliminated by optimizer	__fm_Driver.c
+hint: 420	1164	Variable 'auxVariable' has been eliminated by optimizer	__fm_Driver.c
+hint: 422	1164	Variable 'nErrors' has been eliminated by optimizer	__fm_Driver.c
+hint: 440	1164	Variable 'auxVariable' has been eliminated by optimizer	__fm_Driver.c
+hint: 442	1164	Variable 'nErrors' has been eliminated by optimizer	__fm_Driver.c
+hint: 460	1164	Variable 'auxVariable' has been eliminated by optimizer	__fm_Driver.c
+hint: 462	1164	Variable 'nErrors' has been eliminated by optimizer	__fm_Driver.c
+hint: 480	1164	Variable 'channel_' has been eliminated by optimizer	__fm_Driver.c
+hint: 483	1164	Variable 'channelFrequency_' has been eliminated by optimizer	__fm_Driver.c
+hint: 626	1164	Variable 'channel_' has been eliminated by optimizer	__fm_Driver.c
+hint: 659	1164	Variable 'channelLimitUp' has been eliminated by optimizer	__fm_Driver.c
+hint: 664	1164	Variable 'aux_' has been eliminated by optimizer	__fm_Driver.c
+hint: 851	1164	Variable 'channelLimitUp' has been eliminated by optimizer	__fm_Driver.c
+hint: 855	1164	Variable 'aux_' has been eliminated by optimizer	__fm_Driver.c
+hint: 936	1164	Variable 'channelLimitUp' has been eliminated by optimizer	__fm_Driver.c
+hint: 940	1164	Variable 'aux_' has been eliminated by optimizer	__fm_Driver.c
+hint: 1015	1164	Variable 'status_' has been eliminated by optimizer	__fm_Driver.c
+hint: 1024	1164	Variable 'status_' has been eliminated by optimizer	__fm_Driver.c
+diagnostics: 0	127	All files Compiled in 172 ms	 
+hint: 0	1144	Used RX (bytes): 31 (97%)   Free RX (bytes): 1 (3%)	Used RX (bytes): 31 (97%)   Free RX (bytes): 1 (3%)
+hint: 0	1144	Static RAM (bytes): 698   Dynamic RAM (bytes): 1350	Static RAM (bytes): 698   Dynamic RAM (bytes): 1350
+hint: 0	1144	Used ROM (bytes): 14646 (51%)  Free ROM (bytes): 14026 (49%)	Used ROM (bytes): 14646 (51%)  Free ROM (bytes): 14026 (49%)
+diagnostics: 0	125	Project Linked Successfully	Click_FM_AVR.mcpav
+hint: 120	1004	Possible stack overflow: recursion or cross-calling detected.	__Lib_TWI.c
+diagnostics: 0	128	Linked in 109 ms	 
+diagnostics: 0	129	Project 'Click_FM_AVR.mcpav' completed: 296 ms	 
+diagnostics: 0	103	Finished successfully: 19 Nov 2018, 19:35:07	Click_FM_AVR.mcpav

@@ -1,0 +1,472 @@
+{
+Example for FM Click
+
+    Date          : Nov 2018.
+    Author        : Aleksandar Paunovic
+
+Test configuration STM32 :
+    
+    MCU              : STM32F107VCT6
+    Dev. Board       : EasyMx PRO v7 for STM32
+    ARM Compiler ver : v6.0.0.0
+
+---
+
+Description :
+
+The application is composed of three sections :
+
+- System Initialization - Initializing AN pin as input, RST pin as output, CS pin as output and INT pin as input, initializing I2C and LOG functionalities
+- Application Initialization - Initializing I2C driver, powering up device, setting basic settings for Europe, setting values of seek threshold, volume,
+  snr threshold and impulse detection threshold
+- Application Task - Waits for valid user input and executes functions based on set of valid commands
+- Commands :
+  '+' - volume up
+  '-' - volume down
+  's' - seek
+  't' - tune
+  'm' - memorize current station
+  'i' - mute enable/disable
+  '1' - station 1 tune
+  '2' - station 2 tune
+  '3' - station 3 tune
+  '4' - station 4 tune
+  '5' - station 5 tune
+  '.' - fine tune up
+  ',' - fine tune down)
+
+Additional Functions :
+
+- void fm_casePlus( )     - Increases volume
+- void fm_caseMinus( )    - Decreases volume
+- void fm_caseSeek( )     - Seeks next station
+- void fm_caseTune( )     - Tunes default station
+- void fm_caseMemorize( ) - Memorizes current station
+- void fm_caseStation1( ) - Tunes memorized station 1
+- void fm_caseStation2( ) - Tunes memorized station 2
+- void fm_caseStation3( ) - Tunes memorized station 3
+- void fm_caseStation4( ) - Tunes memorized station 4
+- void fm_caseStation5( ) - Tunes memorized station 5
+- void fm_caseMute( )     - Mutes device
+- void fm_caseTuneUp( )   - Fine tunes frequency
+- void fm_caseTuneDown( ) - Fine tunes frequency
+}
+program Click_FM_STM;
+
+uses Click_FM_types, Click_FM_config;
+
+var
+    text : array[50] of char; 
+    receivedSignalStrengthIndicator : uint16_t; 
+    seekThreshold_ : uint16_t; 
+    stationFrequency_ : uint16_t; 
+    station1_ : uint16_t; 
+    station2_ : uint16_t; 
+    station3_ : uint16_t; 
+    station4_ : uint16_t; 
+    station5_ : uint16_t; 
+    impulseDetectionThreshold_ : uint8_t; 
+    snrThreshold_ : uint8_t; 
+    volumeLevel_ : uint8_t; 
+    memory_ : uint8_t; 
+    mute_ : uint8_t; 
+    receivedData_ : uint8_t; 
+    dataReady_ : uint8_t; 
+    errorFlag_ : uint8_t; 
+    channelFrequency_ : real; 
+    tunedFrequency_ : real; 
+    tuneFreq : real; 
+    
+procedure fm_casePlus(); 
+begin
+    errorFlag_ := fm_volumeUp(); 
+    if (errorFlag_ = 0) then 
+    begin
+        mikrobus_logWrite('volume up', _LOG_LINE); 
+    end
+    else 
+    begin
+        mikrobus_logWrite('volume max', _LOG_LINE); 
+    end;
+end;
+
+procedure fm_caseMinus(); 
+begin
+    errorFlag_ := fm_volumeDown(); 
+    if (errorFlag_ = 0) then 
+    begin
+        mikrobus_logWrite('volume down', _LOG_LINE); 
+    end
+    else 
+    begin
+        mikrobus_logWrite('volume min', _LOG_LINE); 
+    end;
+end;
+
+procedure fm_caseSeek(); 
+begin
+    fm_seek(); 
+    Delay_ms(100); 
+    fm_endSeek(); 
+    Delay_ms(10); 
+    receivedSignalStrengthIndicator := fm_getReceivedSignalStrengthIndicator(); 
+    channelFrequency_ := fm_getChannelFrequency(); 
+    stationFrequency_ := fm_getChannel(); 
+    WordToStr(receivedSignalStrengthIndicator, text); 
+    mikrobus_logWrite('station found', _LOG_LINE); 
+    mikrobus_logWrite('rssi:', _LOG_TEXT); 
+    mikrobus_logWrite(text, _LOG_TEXT); 
+    mikrobus_logWrite(' dBuV', _LOG_LINE); 
+    FloatToStr(channelFrequency_, text); 
+    mikrobus_logWrite('channel frequency:', _LOG_TEXT); 
+    mikrobus_logWrite(text, _LOG_TEXT); 
+    mikrobus_logWrite(' MHz', _LOG_LINE); 
+end;
+
+procedure fm_caseTune(); 
+begin
+    errorFlag_ := fm_tune(tuneFreq); 
+    Delay_ms(100); 
+    fm_endTune(); 
+    Delay_ms(10); 
+    if (errorFlag_ = 0) then 
+    begin
+        receivedSignalStrengthIndicator := fm_getReceivedSignalStrengthIndicator(); 
+        tunedFrequency_ := fm_getChannelFrequency(); 
+        stationFrequency_ := fm_getChannel(); 
+        mikrobus_logWrite('tune complete', _LOG_LINE); 
+        WordToStr(receivedSignalStrengthIndicator, text); 
+        mikrobus_logWrite('rssi:', _LOG_TEXT); 
+        mikrobus_logWrite(text, _LOG_TEXT); 
+        mikrobus_logWrite(' dBuV', _LOG_LINE); 
+        FloatToStr(tunedFrequency_, text); 
+        mikrobus_logWrite('tuned frequency:', _LOG_TEXT); 
+        mikrobus_logWrite(text, _LOG_TEXT); 
+        mikrobus_logWrite(' MHz', _LOG_LINE); 
+    end
+    else 
+    begin
+        mikrobus_logWrite('frequency not in valid range', _LOG_TEXT); 
+    end;
+end;
+
+procedure fm_caseMemorize(); 
+begin
+    case memory_ of
+        0 :
+        begin
+            station1_ := stationFrequency_; 
+            memory_ := memory_ + 1; 
+            mikrobus_logWrite('station 1 memorized', _LOG_LINE); 
+        end;
+        1 :
+        begin
+            station2_ := stationFrequency_; 
+            memory_ := memory_ + 1; 
+            mikrobus_logWrite('station 2 memorized', _LOG_LINE); 
+        end;
+        2 :
+        begin
+            station3_ := stationFrequency_; 
+            memory_ := memory_ + 1; 
+            mikrobus_logWrite('station 3 memorized', _LOG_LINE); 
+        end;
+        3 :
+        begin
+            station4_ := stationFrequency_; 
+            memory_ := memory_ + 1; 
+            mikrobus_logWrite('station 4 memorized', _LOG_LINE); 
+        end;
+        4 :
+        begin
+            station5_ := stationFrequency_; 
+            memory_ := 0; 
+            mikrobus_logWrite('station 5 memorized', _LOG_LINE); 
+        end
+        else
+        begin
+        end;
+    end;
+end;
+
+procedure fm_caseMute(); 
+begin
+    if (mute_ = 0) then 
+    begin
+        fm_muteEnable(); 
+        mikrobus_logWrite('mute enabled', _LOG_LINE); 
+        mute_ := 1; 
+    end
+    else 
+    begin
+        if (mute_ = 1) then 
+        begin
+            fm_muteDisable(); 
+            mikrobus_logWrite('mute disabled', _LOG_LINE); 
+            mute_ := 0; 
+        end; 
+    end;
+end;
+
+procedure fm_caseStation1(); 
+begin
+    fm_tuneChannel(station1_); 
+    Delay_ms(100); 
+    fm_endTune(); 
+    Delay_ms(10); 
+    receivedSignalStrengthIndicator := fm_getReceivedSignalStrengthIndicator(); 
+    channelFrequency_ := fm_getChannelFrequency(); 
+    mikrobus_logWrite('station 1 tuned', _LOG_LINE); 
+    WordToStr(receivedSignalStrengthIndicator, text); 
+    mikrobus_logWrite('rssi:', _LOG_TEXT); 
+    mikrobus_logWrite(text, _LOG_TEXT); 
+    mikrobus_logWrite(' dBuV', _LOG_LINE); 
+    FloatToStr(channelFrequency_, text); 
+    mikrobus_logWrite('tuned frequency:', _LOG_TEXT); 
+    mikrobus_logWrite(text, _LOG_TEXT); 
+    mikrobus_logWrite(' MHz', _LOG_LINE); 
+end;
+
+procedure fm_caseStation2(); 
+begin
+    fm_tuneChannel(station2_); 
+    Delay_ms(100); 
+    fm_endTune(); 
+    Delay_ms(10); 
+    receivedSignalStrengthIndicator := fm_getReceivedSignalStrengthIndicator(); 
+    channelFrequency_ := fm_getChannelFrequency(); 
+    mikrobus_logWrite('station 2 tuned', _LOG_LINE); 
+    WordToStr(receivedSignalStrengthIndicator, text); 
+    mikrobus_logWrite('rssi:', _LOG_TEXT); 
+    mikrobus_logWrite(text, _LOG_TEXT); 
+    mikrobus_logWrite(' dBuV', _LOG_LINE); 
+    FloatToStr(channelFrequency_, text); 
+    mikrobus_logWrite('tuned frequency:', _LOG_TEXT); 
+    mikrobus_logWrite(text, _LOG_TEXT); 
+    mikrobus_logWrite(' MHz', _LOG_LINE); 
+end;
+
+procedure fm_caseStation3(); 
+begin
+    fm_tuneChannel(station3_); 
+    Delay_ms(100); 
+    fm_endTune(); 
+    Delay_ms(10); 
+    receivedSignalStrengthIndicator := fm_getReceivedSignalStrengthIndicator(); 
+    channelFrequency_ := fm_getChannelFrequency(); 
+    mikrobus_logWrite('station 3 tuned', _LOG_LINE); 
+    WordToStr(receivedSignalStrengthIndicator, text); 
+    mikrobus_logWrite('rssi:', _LOG_TEXT); 
+    mikrobus_logWrite(text, _LOG_TEXT); 
+    mikrobus_logWrite(' dBuV', _LOG_LINE); 
+    FloatToStr(channelFrequency_, text); 
+    mikrobus_logWrite('tuned frequency:', _LOG_TEXT); 
+    mikrobus_logWrite(text, _LOG_TEXT); 
+    mikrobus_logWrite(' MHz', _LOG_LINE); 
+end;
+
+procedure fm_caseStation4(); 
+begin
+    fm_tuneChannel(station4_); 
+    Delay_ms(100); 
+    fm_endTune(); 
+    Delay_ms(10); 
+    receivedSignalStrengthIndicator := fm_getReceivedSignalStrengthIndicator(); 
+    channelFrequency_ := fm_getChannelFrequency(); 
+    mikrobus_logWrite('station 4 tuned', _LOG_LINE); 
+    WordToStr(receivedSignalStrengthIndicator, text); 
+    mikrobus_logWrite('rssi:', _LOG_TEXT); 
+    mikrobus_logWrite(text, _LOG_TEXT); 
+    mikrobus_logWrite(' dBuV', _LOG_LINE); 
+    FloatToStr(channelFrequency_, text); 
+    mikrobus_logWrite('tuned frequency:', _LOG_TEXT); 
+    mikrobus_logWrite(text, _LOG_TEXT); 
+    mikrobus_logWrite(' MHz', _LOG_LINE); 
+end;
+
+procedure fm_caseStation5(); 
+begin
+    fm_tuneChannel(station5_); 
+    Delay_ms(100); 
+    fm_endTune(); 
+    Delay_ms(10); 
+    receivedSignalStrengthIndicator := fm_getReceivedSignalStrengthIndicator(); 
+    channelFrequency_ := fm_getChannelFrequency(); 
+    mikrobus_logWrite('station 5 tuned', _LOG_LINE); 
+    WordToStr(receivedSignalStrengthIndicator, text); 
+    mikrobus_logWrite('rssi:', _LOG_TEXT); 
+    mikrobus_logWrite(text, _LOG_TEXT); 
+    mikrobus_logWrite(' dBuV', _LOG_LINE); 
+    FloatToStr(channelFrequency_, text); 
+    mikrobus_logWrite('tuned frequency:', _LOG_TEXT); 
+    mikrobus_logWrite(text, _LOG_TEXT); 
+    mikrobus_logWrite(' MHz', _LOG_LINE); 
+end;
+
+procedure fm_caseTuneUp(); 
+begin
+    errorFlag_ := fm_fineTuneUp(); 
+    if (errorFlag_ = 0) then 
+    begin
+        Delay_ms(100); 
+        fm_endTune(); 
+        Delay_ms(10); 
+        receivedSignalStrengthIndicator := fm_getReceivedSignalStrengthIndicator(); 
+        channelFrequency_ := fm_getChannelFrequency(); 
+        stationFrequency_ := fm_getChannel(); 
+        mikrobus_logWrite('tune up', _LOG_LINE); 
+        WordToStr(receivedSignalStrengthIndicator, text); 
+        mikrobus_logWrite('rssi:', _LOG_TEXT); 
+        mikrobus_logWrite(text, _LOG_TEXT); 
+        mikrobus_logWrite(' dBuV', _LOG_LINE); 
+        FloatToStr(channelFrequency_, text); 
+        mikrobus_logWrite('tuned frequency:', _LOG_TEXT); 
+        mikrobus_logWrite(text, _LOG_TEXT); 
+        mikrobus_logWrite(' MHz', _LOG_LINE); 
+    end
+    else 
+    begin
+        mikrobus_logWrite('upper band limit reached', _LOG_LINE); 
+    end;
+end;
+
+procedure fm_caseTuneDown(); 
+begin
+    errorFlag_ := fm_fineTuneDown(); 
+    if (errorFlag_ = 0) then 
+    begin
+        Delay_ms(100); 
+        fm_endTune(); 
+        Delay_ms(10); 
+        receivedSignalStrengthIndicator := fm_getReceivedSignalStrengthIndicator(); 
+        channelFrequency_ := fm_getChannelFrequency(); 
+        stationFrequency_ := fm_getChannel(); 
+        mikrobus_logWrite('tune up', _LOG_LINE); 
+        WordToStr(receivedSignalStrengthIndicator, text); 
+        mikrobus_logWrite('rssi:', _LOG_TEXT); 
+        mikrobus_logWrite(text, _LOG_TEXT); 
+        mikrobus_logWrite(' dBuV', _LOG_LINE); 
+        FloatToStr(channelFrequency_, text); 
+        mikrobus_logWrite('tuned frequency:', _LOG_TEXT); 
+        mikrobus_logWrite(text, _LOG_TEXT); 
+        mikrobus_logWrite(' MHz', _LOG_LINE); 
+    end
+    else 
+    begin
+        mikrobus_logWrite('lower band limit reached', _LOG_LINE); 
+    end;
+end;
+
+procedure fm_caseWrongCommand(); 
+begin
+    mikrobus_logWrite('wrong command', _LOG_LINE); 
+end;
+
+procedure systemInit(); 
+begin
+    mikrobus_gpioInit(_MIKROBUS1, _MIKROBUS_AN_PIN, _GPIO_INPUT); 
+    mikrobus_gpioInit(_MIKROBUS1, _MIKROBUS_RST_PIN, _GPIO_OUTPUT); 
+    mikrobus_gpioInit(_MIKROBUS1, _MIKROBUS_CS_PIN, _GPIO_OUTPUT); 
+    mikrobus_gpioInit(_MIKROBUS1, _MIKROBUS_INT_PIN, _GPIO_INPUT); 
+    mikrobus_i2cInit(_MIKROBUS1, @_FM_I2C_CFG[0]); 
+    mikrobus_logInit(_LOG_USBUART_A, 9600); 
+    Delay_ms(100); 
+    mikrobus_logWrite('system init done', _LOG_LINE); 
+end;
+
+procedure applicationInit(); 
+begin
+    fm_i2cDriverInit(T_FM_P(@_MIKROBUS1_GPIO), T_FM_P(@_MIKROBUS1_I2C), 0x10); 
+    Delay_ms(500); 
+    fm_powerUp(); 
+    fm_basicSettings(); 
+    fm_setVolume(volumeLevel_); 
+    fm_setSnrThreshold(snrThreshold_); 
+    fm_setSeekThreshold(seekThreshold_); 
+    fm_setSeekImpulseDetectionThreshold(impulseDetectionThreshold_); 
+    mikrobus_logWrite('application init done', _LOG_LINE); 
+end;
+
+procedure applicationTask(); 
+begin
+    dataReady_ := UART_Rdy_Ptr(); 
+    if (dataReady_ <> 0) then 
+    begin
+        receivedData_ := UART_Rd_Ptr(); 
+        case receivedData_ of
+            '+' :
+            begin
+                fm_casePlus(); 
+            end;
+            '-' :
+            begin
+                fm_caseMinus(); 
+            end;
+            's' :
+            begin
+                fm_caseSeek(); 
+            end;
+            't' :
+            begin
+                fm_caseTune(); 
+            end;
+            'm' :
+            begin
+                fm_caseMemorize(); 
+            end;
+            'i' :
+            begin
+                fm_caseMute(); 
+            end;
+            '1' :
+            begin
+                fm_caseStation1(); 
+            end;
+            '2' :
+            begin
+                fm_caseStation2(); 
+            end;
+            '3' :
+            begin
+                fm_caseStation3(); 
+            end;
+            '4' :
+            begin
+                fm_caseStation4(); 
+            end;
+            '5' :
+            begin
+                fm_caseStation5(); 
+            end;
+            '.' :
+            begin
+                fm_caseTuneUp(); 
+            end;
+            ',' :
+            begin
+                fm_caseTuneDown(); 
+            end
+            else
+            begin
+                fm_caseWrongCommand(); 
+            end;
+        end;
+    end; 
+end;
+
+begin
+    seekThreshold_ := 0x19;
+    impulseDetectionThreshold_ := 0x08;
+    snrThreshold_ := 0x04;
+    volumeLevel_ := 10;
+    memory_ := 0;
+    mute_ := 0;
+    tuneFreq := 107.0;
+
+    systemInit(); 
+    applicationInit(); 
+    while (1) do 
+    begin 
+        applicationTask(); 
+    end;
+end.

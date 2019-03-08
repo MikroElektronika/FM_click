@@ -1,0 +1,41 @@
+0	1	mikroCARM.exe -MSF -DBG -pCEC1702 -RA -BIN -DL -SSA -O11111114 -fo48 -N"C:\Users\aleksandar.paunovic\Desktop\FM Click\example\c\ARM\CEC\Click_FM_CEC.mcpar" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Defs\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\MCHP M4\" -SP"C:\Users\aleksandar.paunovic\Desktop\FM Click\example\c\ARM\CEC\" -SP"C:\Users\aleksandar.paunovic\Desktop\FM Click\library\HAL\" -SP"C:\Users\aleksandar.paunovic\Desktop\FM Click\library\" -SP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Packages\mikroBUS Board Definition API\Uses\" -IP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Uses\MCHP M4\" -IP"C:\Users\aleksandar.paunovic\Desktop\FM Click\example\c\ARM\CEC\" -IP"C:\Users\aleksandar.paunovic\Desktop\FM Click\library\" -IP"C:\Users\aleksandar.paunovic\Desktop\FM Click\library\HAL\" -IP"C:\Users\Public\Documents\Mikroelektronika\mikroC PRO for ARM\Packages\mikroBUS Board Definition API\Uses\" "Click_FM_CEC.c" "__fm_driver.c" "__Lib_Math.emcl" "__Lib_MathDouble.emcl" "__Lib_Delays.emcl" "__Lib_System_CEC1702.emcl" "__Lib_GPIO_CEC1702.emcl" "__Lib_CString.emcl" "__Lib_Conversions.emcl" "__Lib_I2C_1702.emcl" "__Lib_UART_01.emcl" "clicker_2_CEC1702.emcl" "Click_FM.pld"	 
+diagnostics: 0	122	Compilation Started	CEC1702.c
+diagnostics: 25822	123	Compiled Successfully	CEC1702.c
+diagnostics: 0	122	Compilation Started	__Lib_Delays.c
+diagnostics: 119	123	Compiled Successfully	__Lib_Delays.c
+hint: 66	1164	Variable 'cycles_div_by_10' has been eliminated by optimizer	__Lib_Delays.c
+hint: 88	1164	Variable 'NumberOfCyc' has been eliminated by optimizer	__Lib_Delays.c
+hint: 105	1164	Variable 'NumberOfCyc' has been eliminated by optimizer	__Lib_Delays.c
+diagnostics: 0	122	Compilation Started	stdint.h
+diagnostics: 348	123	Compiled Successfully	clicker_2_CEC1702.c
+diagnostics: 0	122	Compilation Started	stdint.h
+error: 460	324	Undeclared identifier '_LOG_USBUART_A' in expression	Click_FM_CEC.c
+diagnostics: 0	122	Compilation Started	stdint.h
+hint: 661	1163	Variable 'band_' has been declared, but not used	__fm_driver.c
+diagnostics: 1027	123	Compiled Successfully	__fm_driver.c
+hint: 323	1164	Variable 'tmp' has been eliminated by optimizer	__fm_driver.c
+hint: 84	1164	Variable 'tmp' has been eliminated by optimizer	__fm_driver.c
+hint: 101	1164	Variable 'ptr' has been eliminated by optimizer	__fm_driver.c
+hint: 109	1164	Variable 'ptr' has been eliminated by optimizer	__fm_driver.c
+hint: 380	1164	Variable 'auxVariable' has been eliminated by optimizer	__fm_driver.c
+hint: 382	1164	Variable 'nErrors' has been eliminated by optimizer	__fm_driver.c
+hint: 400	1164	Variable 'auxVariable' has been eliminated by optimizer	__fm_driver.c
+hint: 402	1164	Variable 'rssiValue' has been eliminated by optimizer	__fm_driver.c
+hint: 418	1164	Variable 'auxVariable' has been eliminated by optimizer	__fm_driver.c
+hint: 420	1164	Variable 'nErrors' has been eliminated by optimizer	__fm_driver.c
+hint: 438	1164	Variable 'auxVariable' has been eliminated by optimizer	__fm_driver.c
+hint: 440	1164	Variable 'nErrors' has been eliminated by optimizer	__fm_driver.c
+hint: 458	1164	Variable 'auxVariable' has been eliminated by optimizer	__fm_driver.c
+hint: 460	1164	Variable 'nErrors' has been eliminated by optimizer	__fm_driver.c
+hint: 478	1164	Variable 'channel_' has been eliminated by optimizer	__fm_driver.c
+hint: 481	1164	Variable 'channelFrequency_' has been eliminated by optimizer	__fm_driver.c
+hint: 624	1164	Variable 'channel_' has been eliminated by optimizer	__fm_driver.c
+hint: 653	1164	Variable 'channelLimitUp' has been eliminated by optimizer	__fm_driver.c
+hint: 662	1164	Variable 'aux_' has been eliminated by optimizer	__fm_driver.c
+hint: 843	1164	Variable 'channelLimitUp' has been eliminated by optimizer	__fm_driver.c
+hint: 853	1164	Variable 'aux_' has been eliminated by optimizer	__fm_driver.c
+hint: 929	1164	Variable 'channelLimitUp' has been eliminated by optimizer	__fm_driver.c
+hint: 938	1164	Variable 'aux_' has been eliminated by optimizer	__fm_driver.c
+hint: 1013	1164	Variable 'status_' has been eliminated by optimizer	__fm_driver.c
+hint: 1022	1164	Variable 'status_' has been eliminated by optimizer	__fm_driver.c
+error: 0	102	Finished (with errors): 20 Nov 2018, 10:28:06	Click_FM_CEC.mcpar
